@@ -1,28 +1,37 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+  v-app.app
+    v-main
+      c-navigation
+      c-reservations
+      contact-modal(v-if="contactModal")
+      .router-view
+        router-view
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CNavigation from '@/components/CNavigation.vue'
+import CReservations from '@/components/CReservations.vue'
+import ContactModal from '@/components/modals/CContactModal.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    CNavigation,
+    CReservations,
+    ContactModal
+  },
+  data () {
+    return {
+      contactModal: true
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus">
+.app
+  max-height 100vh
+  overflow hidden
+  overflow-y auto
 </style>
