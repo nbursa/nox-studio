@@ -176,6 +176,7 @@ export default {
       background-color #1e1e1e
       border-radius 15px 0 0 15px
       text-transform uppercase
+      color #ffffff
     .page-title
       font-weight bold
       margin-bottom 20px

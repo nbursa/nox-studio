@@ -100,6 +100,7 @@ export default {
     background-color #1e1e1e
     border-radius 0 15px 15px 0
     text-transform uppercase
+    color #ffffff
   nav
     display flex
     flex-direction column
