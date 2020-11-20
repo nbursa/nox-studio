@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const setLoggedIn = (state, payload) => {
   state.isLoggedIn = payload
 }
@@ -8,11 +10,11 @@ export const setIsAdmin = (state, payload) => {
 
 export const toggleModal = (state, payload) => {
   const stateModals = state.modals
-  stateModals[payload] = !stateModals[payload]
+  Vue.set(stateModals, payload, !stateModals[payload])
 }
 
 export const setFiles = (state, payload) => {
-  state.files[payload.location] = payload.value
+  Vue.set(state.files, payload.location, payload.value)
 }
 
 export const setReservations = (state, payload) => {

@@ -1,8 +1,95 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VHome from '../views/VHome.vue'
+// import VHome from '../views/VHome.vue'
+// import VLogin from '../views/VLogin.vue'
+// import VAdmin from '../views/VAdmin.vue'
+// import VMusic from '../views/VMusic.vue'
+// import VAbout from '../views/VAbout.vue'
+// import VStudio from '../views/VStudio.vue'
+// import VGalery from '../views/VGalery.vue'
+// import VDashboard from '../views/VDashboard.vue'
+// import VReservations from '../views/VReservations.vue'
+import CLoader from '../components/CLoader.vue'
+import CError from '../components/CError.vue'
 
 Vue.use(VueRouter)
+
+const lazyLoadView = ({
+  component,
+  loading,
+  error
+}) => {
+  const AsyncHandler = () => ({
+    component,
+    loading,
+    error
+  })
+
+  return () =>
+    Promise.resolve({
+      functional: true,
+      render (h, {
+        data,
+        children
+      }) {
+        return h(AsyncHandler, data, children)
+      }
+    })
+}
+
+const VHome = lazyLoadView({
+  component: import('../views/VHome.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VLogin = lazyLoadView({
+  component: import('../views/VLogin.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VAdmin = lazyLoadView({
+  component: import('../views/VAdmin.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VMusic = lazyLoadView({
+  component: import('../views/VMusic.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VAbout = lazyLoadView({
+  component: import('../views/VAbout.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VStudio = lazyLoadView({
+  component: import('../views/VStudio.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VGalery = lazyLoadView({
+  component: import('../views/VGalery.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VDashboard = lazyLoadView({
+  component: import('../views/VDashboard.vue'),
+  loading: CLoader,
+  error: CError
+})
+
+const VReservations = lazyLoadView({
+  component: import('../views/VReservations.vue'),
+  loading: CLoader,
+  error: CError
+})
 
 const routes = [
   {
@@ -13,7 +100,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/VLogin.vue'),
+    component: VLogin,
+    // component: () => import('../views/VLogin.vue'),
     meta: {
       guest: true
     }
@@ -21,7 +109,8 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: () => import('../views/VAdmin.vue'),
+    component: VAdmin,
+    // component: () => import('../views/VAdmin.vue'),
     meta: {
       requiresAuth: true,
       isAdmin: true
@@ -30,22 +119,25 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import('../views/VAbout.vue')
+    component: VAbout
+    // component: () => import('../views/VAbout.vue')
   },
   {
     path: '/studio',
     name: 'Studio',
-    component: () => import('../views/VStudio.vue')
+    component: VStudio
+    // component: () => import('../views/VStudio.vue')
   },
   {
     path: '/music',
     name: 'Music',
-    component: () => import('../views/VMusic.vue')
+    component: VMusic
+    // component: () => import('../views/VMusic.vue')
   },
   {
     path: '/galery',
     name: 'Galery',
-    component: () => import('../views/VGalery.vue'),
+    component: VGalery,
     children: [
       {
         path: '/galery/:id',
@@ -57,14 +149,16 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/VDashboard.vue'),
+    component: VDashboard,
+    // component: () => import('../views/VDashboard.vue'),
     meta: {
       requiresAuth: true
     }
   }, {
     path: '/reservations',
     name: 'Reservations',
-    component: () => import('../views/VReservations.vue')
+    component: VReservations
+    // component: () => import('../views/VReservations.vue')
     // meta: {
     //   requiresAuth: true
     // }

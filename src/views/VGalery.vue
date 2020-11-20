@@ -4,7 +4,7 @@
     section.section
       .photos
         .cards
-          .image-card(v-for="(item, i) in photos" :key="i")
+          .image-card(v-for="(item, i) in statePhotos" :key="i")
             router-link(v-if="item" :to="`/galery/${item.id}`")
               img.image(v-if="item.url" :aspect-ratio='16/9' :src='item.url')
               img.image(v-if="!item.url" :aspect-ratio='16/9' src='gs://nox-underground.appspot.com/resources/placeholder-600x400.png')
@@ -15,7 +15,7 @@
 
 <script>
 import CPhoto from '@/components/CPhoto.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -23,40 +23,26 @@ export default {
   },
   data () {
     return {
-      width: 400,
-      photos: []
+      width: 400
     }
   },
   computed: {
     ...mapState({
       statePhotos: state => state.files.image
     }),
-    // photos: function () {
-    //   return this.$store.state.files.image
-    // },
     openPhoto: function () {
       return this.$route.name === 'Photo'
-    }
-  },
-  watch: {
-    statePhotos: {
-      handler: 'setPhotos',
-      immediate: true
     }
   },
   mounted () {
     this.fetchData('image')
   },
   methods: {
+    ...mapActions([
+      'fetchData'
+    ]),
     close () {
       this.$router.push('/galery')
-    },
-    fetchData (ref) {
-      this.$store.dispatch('fetchData', ref)
-    },
-    setPhotos () {
-      console.log('statePhotos; ', this.statePhotos)
-      this.photos = this.statePhotos
     }
   }
 }
