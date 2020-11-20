@@ -7,9 +7,8 @@
         router-link.logo(to="/")
           h1 NOX UNDERGROUND STUDIO
         a.mail(@click="toggleContact")
-          span nox_studio
-          br
-          span @noxstudio.com
+          span.mail-text nox_studio
+          span.mail-text @noxstudio.com
       .list
         router-link.nav-link(v-for="item in navItems" :key="item.id" :to="item.path" @click.native="toggleNav") {{ item.name }}
         router-link.nav-link(v-if="isAdmin" to="/admin") ADMIN
@@ -27,7 +26,8 @@ export default {
       navItems: [
         { id: 0, path: '/about', name: 'O Nama' },
         { id: 1, path: '/music', name: 'Muzika' },
-        { id: 2, path: '/galery', name: 'Galerija' }
+        { id: 2, path: '/galery', name: 'Galerija' },
+        { id: 3, path: '/reservations', name: 'Rezervacije' }
       ],
       navToggle: false
     }
@@ -113,6 +113,10 @@ export default {
         &:hover
           text-decoration underline
           color darken(#ffffff, 40%)
+        &-text
+          font-size 8px !important
+          display block
+          font-weight 100
       .logo
         color #ffffff
         text-decoration none
@@ -127,6 +131,7 @@ export default {
       border-top 1px solid black
       padding 20px 0 0
       .nav-link
+        font-family: Oswald, serif
         text-transform uppercase
         text-decoration none
         color #ffffff

@@ -33,6 +33,11 @@ const routes = [
     component: () => import('../views/VAbout.vue')
   },
   {
+    path: '/studio',
+    name: 'Studio',
+    component: () => import('../views/VStudio.vue')
+  },
+  {
     path: '/music',
     name: 'Music',
     component: () => import('../views/VMusic.vue')
@@ -56,6 +61,13 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  }, {
+    path: '/reservations',
+    name: 'Reservations',
+    component: () => import('../views/VReservations.vue')
+    // meta: {
+    //   requiresAuth: true
+    // }
   }
 ]
 

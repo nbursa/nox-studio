@@ -15,6 +15,7 @@
 
 <script>
 import CPhoto from '@/components/CPhoto.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -22,15 +23,25 @@ export default {
   },
   data () {
     return {
-      width: 400
+      width: 400,
+      photos: []
     }
   },
   computed: {
-    photos: function () {
-      return this.$store.state.files.image
-    },
+    ...mapState({
+      statePhotos: state => state.files.image
+    }),
+    // photos: function () {
+    //   return this.$store.state.files.image
+    // },
     openPhoto: function () {
       return this.$route.name === 'Photo'
+    }
+  },
+  watch: {
+    statePhotos: {
+      handler: 'setPhotos',
+      immediate: true
     }
   },
   mounted () {
@@ -42,6 +53,10 @@ export default {
     },
     fetchData (ref) {
       this.$store.dispatch('fetchData', ref)
+    },
+    setPhotos () {
+      console.log('statePhotos; ', this.statePhotos)
+      this.photos = this.statePhotos
     }
   }
 }

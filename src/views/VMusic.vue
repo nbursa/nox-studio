@@ -6,7 +6,7 @@
       h1.section-title VIDEO
       .videos
         .cards
-          .video-card(v-for="(item, i) in videos" :key="i")
+          .video-card(v-if="video" v-for="(item, i) in video" :key="i")
             video.player(controls='')
               source(:src="item.url" type='video/mp4')
               p
@@ -20,7 +20,7 @@
       h1.section-title AUDIO
       .audio
         .cards
-          v-card.audio-card(v-for="(item, i) in audio" :key="i")
+          v-card.audio-card(v-if="audio" v-for="(item, i) in audio" :key="i")
             p.title {{ item.name }}
             audio.audio-player(controls='')
               source(:src='item.url' type='audio/mpeg')
@@ -29,26 +29,68 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   computed: {
-    files: function () {
-      return this.$store.state.files
-    },
-    videos: function () {
-      return this.$store.state.files.video
-    },
-    audio: function () {
-      return this.$store.state.files.audio
+    ...mapState({
+      stateVideos: state => state.files.video,
+      stateAudios: state => state.files.audio
+    })
+  },
+  data () {
+    return {
+      video: [],
+      audio: []
     }
   },
-  mounted () {
+  watch: {
+    // videos: function (val) {
+    //   console.log('valvid: ', val)
+    // },
+    stateVideos: {
+      handler: 'setVideos',
+      immediate: true
+    },
+    stateAudios: {
+      handler: 'setAudios',
+      immediate: true
+    }
+  },
+  created () {
     this.fetchData('video')
     this.fetchData('audio')
   },
+  mounted () {
+    console.log('audo: ', this.stateAudios)
+    console.log('vido: ', this.stateVideos)
+  },
   methods: {
-    fetchData (ref) {
-      this.$store.dispatch('fetchData', ref)
+    ...mapActions([
+      'fetchData'
+    ]),
+    setVideos () {
+      // this.video = []
+      // console.log('set videos: ', this.videos)
+      // this.videos && this.videos.forEach(video => {
+      //   this.video.push(video)
+      // })
+      this.video = this.stateVideos
+      console.log('videos: ', this.video)
+    },
+    setAudios () {
+      // this.audio = []
+      // this.audios && this.audios.forEach(audio => {
+      //   this.audio.push(audio)
+      // })
+      this.audio = this.stateAudios
+      console.log('audios: ', this.audio)
     }
+    // setAudios: function () {
+    //   console.log('val: ', o, val)
+    //   this.audio = this.audios
+    //   console.log('audios: ', this.audios)
+    // }
   }
 }
 
