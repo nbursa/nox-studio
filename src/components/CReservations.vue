@@ -1,8 +1,8 @@
 <template lang="pug">
-  .reservations-sidebar
-    .flag
+  .reservations-sidebar(:style="{right:navToggle ? '0' : '-380px'}")
+    .flag(@click="toggleNav")
       span.icon(icon)
-        v-icon(x-large) mdi-calendar
+        v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-calendar' }}
     .reservations
       h1.page-title REZERVACIJA
       validation-observer(ref="observer" v-slot="{ invalid }")
@@ -84,10 +84,14 @@ export default {
         end: new Date(),
         color: 'gray',
         timed: true
-      }
+      },
+      navToggle: false
     }
   },
   methods: {
+    toggleNav () {
+      this.navToggle = !this.navToggle
+    },
     resetForm () {
       this.form = {
         name: '',
@@ -115,17 +119,17 @@ export default {
   .reservations-sidebar
     position fixed
     top 0
-    right 0
+    right 380px
     height 100vh
     background-color #1e1e1e
-    transition transform .25s ease-in-out
+    transition right .25s ease-in-out
     border-left 5px solid #121212
-    transform translateX(380px)
+    // transform translateX(380px)
     box-sizing content-box
     z-index 2
     &:hover
-      transform translateX(0)
-      right 0
+      // transform translateX(0)
+      // right 0
       border-left 5px solid transparent
     .reservations
       max-height 100vh

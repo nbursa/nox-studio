@@ -7,6 +7,9 @@
       p Adresa, 11070, Novi Beograd
       p +381 99 9999 999
     section.news
+      h1 OVDE MOZDA NOVOSTI?
+    section.map
+      h1 OVDE MOZDA MAPU?
 
 </template>
 
@@ -65,6 +68,12 @@ export default {
       p
         margin-bottom 0
         font-weight 100
-    .news
+    .news,
+    .map
       height 100vh
+      display flex
+      align-items center
+      justify-content center
+      height 100vh
+
 </style>

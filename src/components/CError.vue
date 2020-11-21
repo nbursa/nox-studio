@@ -1,6 +1,6 @@
 <template lang="pug">
 .error
-  | h1 Error component
+  | h1 Error
 </template>
 
 <script>

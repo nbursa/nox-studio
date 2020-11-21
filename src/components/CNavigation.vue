@@ -1,21 +1,28 @@
 <template lang="pug">
-.navigation
-  .flag
+.navigation(:style="{left:navToggle ? '0' : '-380px'}")
+  .flag(@click="toggleNav")
     span.icon(icon)
-      v-icon(x-large) mdi-menu
+      v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-menu' }}
   nav
     .top
-      v-btn.lang(@click="changeLang" small rounded) {{ locale }}
+      .top-header
+        v-btn.lang(@click="changeLang" small rounded) {{ locale }}
+        .links
+          v-btn.soc(v-for="item in social" :key="item.id")
+            span.icon(icon)
+              v-icon(medium) {{ item.icon }}
       router-link.logo(to="/")
         h1 NOX UNDERGROUND STUDIO
+        p Adresa, 11070 Novi Beograd
+        p +381 99 9999 999
       a.mail(@click="toggleContact")
         span.mail-text nox_studio
         span.mail-text @noxstudio.com
     .list
       router-link.nav-link(v-for="item in navItems" :key="item.id" :to="item.path" @click.native="toggleNav") {{ item.name }}
       router-link.nav-link(v-if="isAdmin" to="/admin") ADMIN
-      router-link.nav-link(v-if="!isLoggedIn" to="/login") LOGIN
-      router-link.nav-link(v-if="isLoggedIn" to="" @click.native="logOut") LOGOUT
+      router-link.nav-link.log-btn(v-if="!isLoggedIn" to="/login") LOGIN
+      router-link.nav-link.log-btn(v-if="isLoggedIn" to="" @click.native="logOut") LOGOUT
 
 </template>
 
@@ -31,7 +38,25 @@ export default {
         { id: 2, path: '/galery', name: 'Galerija' },
         { id: 3, path: '/reservations', name: 'Rezervacije' }
       ],
-      navToggle: false
+      navToggle: false,
+      social: [
+        {
+          text: 'Instagram',
+          icon: 'mdi-instagram'
+        },
+        {
+          text: 'Facebook',
+          icon: 'mdi-facebook'
+        },
+        {
+          text: 'Twitter',
+          icon: 'mdi-twitter'
+        },
+        {
+          text: 'LinkedIn',
+          icon: 'mdi-linkedin'
+        }
+      ]
     }
   },
   computed: {
@@ -80,8 +105,8 @@ export default {
 .navigation
   position fixed
   top 0
-  left -200px
-  width 200px
+  left -380px
+  width 380px
   height 100vh
   background-color #1e1e1e
   transition left .25s ease-in-out
@@ -89,13 +114,13 @@ export default {
   box-sizing content-box
   z-index 2
   &:hover
-    left 0
+    // left 0
     border-right 5px solid transparent
   .flag
     display block
     position absolute
     top 10px
-    left 200px
+    left 380px
     z-index 300
     padding 10px 20px
     cursor pointer
@@ -109,6 +134,24 @@ export default {
     padding 20px
     .top
       padding 0 0 20px
+      &-header
+        .lang
+          margin-bottom 20px
+          border 1px solid #ffffff
+          margin-right 0
+          margin-left auto
+        .links
+          width 100%
+          display flex
+          justify-content flex-start
+          .soc
+            padding 0
+            display inline-flex
+            background-color transparent
+            box-shadow none
+            min-width 40px
+            height 40px
+            margin-right 20px
       .mail
         color #ffffff
         transition text-decoration, color .25s ease-in-out
@@ -123,16 +166,15 @@ export default {
         color #ffffff
         text-decoration none
         h1
-          margin-bottom 20px
-      .lang
-        margin-bottom 20px
-        border 1px solid #ffffff
+          font-size 25px
+          margin 40px 0 20px
     .list
       display flex
       flex-direction column
       border-top 1px solid black
       padding 20px 0 0
       .nav-link
+        font-size 20px
         font-family: Oswald, serif
         text-transform uppercase
         text-decoration none
@@ -141,5 +183,7 @@ export default {
         transition color .25s ease-in-out
         &:hover
           color darken(#ffffff, 40%)
+        &.log-btn
+          font-weight 100
 
 </style>
