@@ -1,19 +1,21 @@
 <template lang="pug">
-  .navigation
-    .flag Meni
-    nav
-      .top
-        v-btn.lang(@click="changeLang" small rounded) {{ locale }}
-        router-link.logo(to="/")
-          h1 NOX UNDERGROUND STUDIO
-        a.mail(@click="toggleContact")
-          span.mail-text nox_studio
-          span.mail-text @noxstudio.com
-      .list
-        router-link.nav-link(v-for="item in navItems" :key="item.id" :to="item.path" @click.native="toggleNav") {{ item.name }}
-        router-link.nav-link(v-if="isAdmin" to="/admin") ADMIN
-        router-link.nav-link(v-if="!isLoggedIn" to="/login") LOGIN
-        router-link.nav-link(v-if="isLoggedIn" to="" @click.native="logOut") LOGOUT
+.navigation
+  .flag
+    span.icon(icon)
+      v-icon(x-large) mdi-menu
+  nav
+    .top
+      v-btn.lang(@click="changeLang" small rounded) {{ locale }}
+      router-link.logo(to="/")
+        h1 NOX UNDERGROUND STUDIO
+      a.mail(@click="toggleContact")
+        span.mail-text nox_studio
+        span.mail-text @noxstudio.com
+    .list
+      router-link.nav-link(v-for="item in navItems" :key="item.id" :to="item.path" @click.native="toggleNav") {{ item.name }}
+      router-link.nav-link(v-if="isAdmin" to="/admin") ADMIN
+      router-link.nav-link(v-if="!isLoggedIn" to="/login") LOGIN
+      router-link.nav-link(v-if="isLoggedIn" to="" @click.native="logOut") LOGOUT
 
 </template>
 

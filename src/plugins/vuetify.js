@@ -30,7 +30,7 @@ export const preset = {
     disable: false,
     options: {
       cspNonce: undefined,
-      customProperties: undefined,
+      customProperties: false,
       minifyTheme: undefined,
       themeCache: undefined
     },
@@ -64,8 +64,8 @@ export const preset = {
       //   warning: '#FB8C00'
       // }
       dark: {
-        customDark: '#1E1E1E',
-        primary: '#2196F3',
+        noxdark: '#1E1E1E',
+        primary: '#FB8C00',
         secondary: '#424242',
         accent: '#FF4081',
         error: '#FF5252',

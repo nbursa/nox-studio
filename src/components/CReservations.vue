@@ -1,6 +1,8 @@
 <template lang="pug">
   .reservations-sidebar
-    .flag Rezervisi
+    .flag
+      span.icon(icon)
+        v-icon(x-large) mdi-calendar
     .reservations
       h1.page-title REZERVACIJA
       validation-observer(ref="observer" v-slot="{ invalid }")
@@ -86,11 +88,24 @@ export default {
     }
   },
   methods: {
+    resetForm () {
+      this.form = {
+        name: '',
+        email: '',
+        phone: '',
+        date: new Date().toISOString().substr(0, 10),
+        start: new Date(),
+        end: new Date(),
+        color: 'gray',
+        timed: true
+      }
+    },
     send () {
       firebase
         .database()
-        .ref(`reservations/${this.form.date}-${this.form.name}-${this.form.phone}`)
+        .ref(`reservations/${this.form.date}-${this.form.start}-${this.form.end}`)
         .set(this.form)
+        .then(this.resetForm())
     }
   }
 }
@@ -121,7 +136,9 @@ export default {
       .form-field-input
         padding-left 20px
     .flag
-      display block
+      display flex
+      align-items center
+      justify-content space-between
       position absolute
       top 10px
       right 380px
@@ -132,6 +149,8 @@ export default {
       border-radius 15px 0 0 15px
       text-transform uppercase
       color #ffffff
+      .text
+        margin-left 10px
     .page-title
       font-weight bold
       margin-bottom 20px

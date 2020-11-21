@@ -6,6 +6,7 @@
       contact-modal(v-if="contactModal")
       .router-view
         router-view
+      c-nox-audio-player
 
 </template>
 
@@ -13,13 +14,15 @@
 import CNavigation from '@/components/CNavigation.vue'
 import CReservations from '@/components/CReservations.vue'
 import ContactModal from '@/components/modals/CContactModal.vue'
+import CNoxAudioPlayer from '@/components/CNoxAudioPlayer.vue'
 
 export default {
   name: 'App',
   components: {
     CNavigation,
     CReservations,
-    ContactModal
+    ContactModal,
+    CNoxAudioPlayer
   },
   data () {
     return {
@@ -34,4 +37,5 @@ export default {
   max-height 100vh
   overflow hidden
   overflow-y auto
+
 </style>

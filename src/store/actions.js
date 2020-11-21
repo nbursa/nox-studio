@@ -29,7 +29,6 @@ export const fetchData = ({
     video: [],
     image: []
   }
-  // console.log('fetching load', payload)
   commit('setFiles', {
     location: payload,
     value: []
@@ -43,7 +42,6 @@ export const fetchData = ({
         url: item.url
       }
       stateFiles[payload].push(fileItem)
-      // console.log('statfilese: ', stateFiles)
     })
     Object.keys(stateFiles).forEach(key => {
       if (stateFiles[key].length) {
@@ -51,9 +49,7 @@ export const fetchData = ({
           location: key,
           value: stateFiles[key]
         }
-        // console.log('set: ', set)
         commit('setFiles', set)
-        // console.log('state: ', state.files)
       }
     })
   })

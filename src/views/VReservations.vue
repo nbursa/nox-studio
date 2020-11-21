@@ -32,23 +32,34 @@
             v-list-item(@click="type = '4day'")
               v-list-item-title 4 days
     v-sheet(height='600')
-      v-calendar(v-if="events" ref='calendar' v-model='focus' color='primary' :events='events' :event-color='getEventColor' :type='type' @click:event='' @click:more='viewDay' @click:date='viewDay' @change='updateRange')
+      v-calendar(v-if="events" ref='calendar' v-model='focus' color='primary' :events='events' :event-color='getEventColor' :type='type' @click:event='showEvent' @click:more='viewDay' @click:date='viewDay' @change='updateRange')
       v-menu(v-model='selectedOpen' :close-on-content-click='false' :activator='selectedElement' offset-x='')
-        v-card(color='grey lighten-4' min-width='350px' flat='')
-          v-toolbar(:color='selectedEvent.color' dark='')
-            v-btn(icon='')
+        v-card(color='grey lighten-4' min-width='350px' max-width="450px" flat='')
+          v-toolbar(:color='selectedEvent.color' dark)
+            v-btn(icon @click="textDisabled = !textDisabled" v-if="isAdmin")
               v-icon mdi-pencil
             v-toolbar-title(v-html='selectedEvent.name')
             v-spacer
-            v-btn(icon='')
-              v-icon mdi-heart
-            v-btn(icon='')
-              v-icon mdi-dots-vertical
-          v-card-text
-            span(v-html='selectedEvent.details')
-          v-card-actions
-            v-btn(text='' color='secondary' @click='selectedOpen = false')
-              | Cancel
+            //- v-btn(icon)
+            //-   v-icon mdi-heart
+            v-btn(icon @click='selectedOpen = false')
+              v-icon mdi-close
+          v-card-text.text-card(:class="{gray: textDisabled}")
+            v-textarea.text(
+              clearable
+              clear-icon="mdi-close-circle"
+              color="noxdark"
+              :disabled="textDisabled"
+              name="input-7-1"
+              label="Detalji rezervacije"
+              :value="`Datum: ${eventDate}\n Pocetak: ${eventStart}\n Kraj: ${eventEnd}`"
+              hint="Hint text"
+            )
+              //- p(color="red") {{selectedEvent.date}}
+              //- p(color="red") {{selectedEvent.start}} {{selectedEvent.end}}
+          //- v-card-actions
+          //-   v-btn(text color='secondary' @click='selectedOpen = false')
+          //-     | Zatvori
 
 </template>
 
@@ -58,8 +69,18 @@ import { mapActions, mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      reservations: state => state.reservations
-    })
+      reservations: state => state.reservations,
+      isAdmin: state => state.isAdmin
+    }),
+    eventDate: function () {
+      return this.selectedEvent.date
+    },
+    eventStart: function () {
+      return this.selectedEvent.start && this.selectedEvent.start.toLocaleTimeString()
+    },
+    eventEnd: function () {
+      return this.selectedEvent.end && this.selectedEvent.end.toLocaleTimeString()
+    }
   },
   data () {
     return {
@@ -74,7 +95,8 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: []
+      events: [],
+      textDisabled: true
     }
   },
   watch: {
@@ -107,26 +129,25 @@ export default {
     next () {
       this.$refs.calendar.next()
     },
-    // eslint-disable-next-line
-    // showEvent ({ nativeEvent, event }) {
-    //   console.log('show event: ', nativeEvent, event)
-    //   const open = () => {
-    //     this.selectedEvent = event
-    //     this.selectedElement = nativeEvent.target
-    //     setTimeout(() => {
-    //       this.selectedOpen = true
-    //     }, 10)
-    //   }
+    showEvent ({ nativeEvent, event }) {
+      console.log('show event: ', nativeEvent, event)
+      const open = () => {
+        this.selectedEvent = event
+        this.selectedElement = nativeEvent.target
+        setTimeout(() => {
+          this.selectedOpen = true
+        }, 10)
+      }
 
-    //   if (this.selectedOpen) {
-    //     this.selectedOpen = false
-    //     setTimeout(open, 10)
-    //   } else {
-    //     open()
-    //   }
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        setTimeout(open, 10)
+      } else {
+        open()
+      }
 
-    //   nativeEvent.stopPropagation()
-    // },
+      nativeEvent.stopPropagation()
+    },
     updateRange () {
       const events = []
       this.reservations && this.reservations.forEach((item, i) => {
@@ -156,5 +177,28 @@ export default {
       text-align center
     .v-event
       text-align center
+
+  .v-card__text.text-card
+    background-color black !important
+  .text.theme--dark.v-input--is-disabled input, .text.theme--dark.v-input--is-disabled textarea
+    color gray !important
+  // .theme--dark.v-input--is-label-active input, .theme--dark.v-input--is-label-active textarea
+    // color black !important
+    // >>> .v-menu__content
+    // ::v-deep .theme--dark.v-input input, .theme--dark.v-input textarea
+    //     color gray !important
+  // >>> .theme--dark
+  //     // .v-input input, .theme--dark.v-input textarea
+  //     #input-372
+  //       color gray !important
+  //     .v-input input, .theme--dark.v-input textarea
+  //       color black !important
+    // .v-card > .v-card__text.text-carddisableddisabled
+    //   color #000000 !important
+    //   &.gray
+    //     .text
+    //       color gray !important
+    //   .text
+    //     color #000000 !important
 
 </style>
