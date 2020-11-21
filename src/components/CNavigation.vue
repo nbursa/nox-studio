@@ -2,7 +2,7 @@
 .navigation(:style="{left:navToggle ? '0' : '-380px'}")
   .flag(@click="toggleNav")
     span.icon(icon)
-      v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-menu' }}
+      v-icon(large) {{ navToggle ? 'mdi-close' : 'mdi-menu' }}
   nav
     .top
       .top-header
@@ -114,7 +114,6 @@ export default {
   box-sizing content-box
   z-index 2
   &:hover
-    // left 0
     border-right 5px solid transparent
   .flag
     display block
@@ -155,8 +154,8 @@ export default {
       .mail
         color #ffffff
         transition text-decoration, color .25s ease-in-out
+        margin-top 10px
         &:hover
-          text-decoration underline
           color darken(#ffffff, 40%)
         &-text
           font-size 8px !important
@@ -165,9 +164,15 @@ export default {
       .logo
         color #ffffff
         text-decoration none
+        &:hover
+          color darken(#ffffff, 40%)
         h1
           font-size 25px
-          margin 40px 0 20px
+          margin 40px 0 10px
+        p
+          font-weight 100
+          line-height 1
+          margin-bottom 10px
     .list
       display flex
       flex-direction column

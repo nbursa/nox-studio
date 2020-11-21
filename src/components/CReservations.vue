@@ -2,7 +2,7 @@
   .reservations-sidebar(:style="{right:navToggle ? '0' : '-380px'}")
     .flag(@click="toggleNav")
       span.icon(icon)
-        v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-calendar' }}
+        v-icon(large) {{ navToggle ? 'mdi-close' : 'mdi-calendar' }}
     .reservations
       h1.page-title REZERVACIJA
       validation-observer(ref="observer" v-slot="{ invalid }")
@@ -119,24 +119,21 @@ export default {
   .reservations-sidebar
     position fixed
     top 0
-    right 380px
+    right 420px
     height 100vh
+    width 380px
     background-color #1e1e1e
     transition right .25s ease-in-out
     border-left 5px solid #121212
-    // transform translateX(380px)
     box-sizing content-box
     z-index 2
     &:hover
-      // transform translateX(0)
-      // right 0
       border-left 5px solid transparent
     .reservations
       max-height 100vh
       overflow-x hidden
       overflow-y auto
       padding 20px
-      width 340px
       .form-field-input
         padding-left 20px
     .flag
@@ -194,6 +191,6 @@ export default {
         height 50px
         width 100%
         font-size 1rem
-        max-width 300px
+        padding 0
 
 </style>

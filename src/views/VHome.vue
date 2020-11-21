@@ -29,11 +29,7 @@ export default {
   computed: {
     ...mapState({
       stateVideo: state => state.files.video
-      // stateAudio: state => state.files.audio
     })
-    // videoSources: function () {
-    //   return this.stateVideo && this.stateVideo.map(v => v.url).filter(l => l.includes('video.mp4'))
-    // }
   },
   mounted () {
     this.fetchData('video')
