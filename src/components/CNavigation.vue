@@ -156,6 +156,10 @@ export default {
     display flex
     flex-direction column
     padding 20px
+    height 100%
+    max-height 100vh
+    overflow hidden
+    overflow-y auto
     .top
       padding 0 0 20px
       &-header
@@ -202,7 +206,7 @@ export default {
       display flex
       flex-direction column
       border-top 1px solid black
-      padding 20px 0 0
+      padding 20px 0 30px
       .nav-link
         font-size 20px
         font-family: Oswald, serif
