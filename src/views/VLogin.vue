@@ -64,12 +64,19 @@ export default {
         .then((res) => {
           if (res.user) {
             const user = {
-              email: email,
+              displayName: res.user.displayName,
+              email: res.user.email,
+              emailVerified: res.user.emailVerified,
+              metadata: res.user.metadata,
               uid: res.user.uid,
+              refreshToken: res.user.refreshToken,
+              phoneNumber: res.user.phoneNumber,
+              photoURL: res.user.photoURL,
               isAdmin: process.env.VUE_APP_FIREBASE_adminIds.includes(res.user.uid) ? 1 : 0
             }
+            this.$store.dispatch('setUser', user)
             localStorage.setItem('nox_user', JSON.stringify(user))
-            localStorage.setItem('nox_jwt', res.user.refreshToken)
+            localStorage.setItem('nox_jwt', user.refreshToken)
             this.$store.dispatch('setLoggedIn', true)
             if (user.isAdmin === 1) {
               this.$store.dispatch('setIsAdmin', true)

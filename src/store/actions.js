@@ -1,5 +1,12 @@
 import firebase from 'firebase/app'
 
+export const setUser = ({
+  commit
+}, payload) => {
+  commit('setUser', payload)
+  return Promise.resolve()
+}
+
 export const toggleModal = ({
   commit
 }, payload) => {

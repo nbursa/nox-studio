@@ -11,8 +11,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLoggedIn: false,
-    isAdmin: false,
+    user: {},
+    isLoggedIn: !!localStorage.getItem('nox_jwt'),
+    isAdmin: !!localStorage.getItem('nox_user') && JSON.parse(localStorage.getItem('nox_user')).isAdmin === 1,
     files: {
       audios: [],
       videos: [],
