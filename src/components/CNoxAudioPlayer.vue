@@ -23,8 +23,9 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
+    // ...mapGetters(['stateAudios'])
     ...mapState({
-      stateAudio: state => state.files.audio
+      stateAudios: state => state.files.audio
     })
   },
   data () {
@@ -35,19 +36,15 @@ export default {
   mounted () {
     this.fetchData('audio')
     this.makeList()
-    // if (this.stateAudio) {
-    //   this.makeList()
-    // }
   },
   methods: {
     ...mapActions([
       'fetchData'
     ]),
     makeList () {
-      this.stateAudio && this.stateAudio.map(a => {
+      this.stateAudios.map(a => {
         this.list.push(a.url)
       })
-      // console.log('list: ', this.list)
     }
   }
 }
