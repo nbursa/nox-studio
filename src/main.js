@@ -10,10 +10,14 @@ import 'firebase/auth'
 import 'firebase/database'
 import 'firebase/storage'
 import vuetify from './plugins/vuetify'
+import clickOutside from './directives/click-outside'
+import golden from './directives/golden'
 
 Vue.config.productionTip = false
 
 Vue.use(Calendar, { componentPrefix: 'nox' })
+Vue.use(clickOutside)
+Vue.use(golden)
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_apiKey,
@@ -33,6 +37,5 @@ new Vue({
   store,
   firebase,
   vuetify,
-  // eslint-disable-next-line
   render: h => h(App)
 }).$mount('#app')
