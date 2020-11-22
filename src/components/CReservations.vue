@@ -179,7 +179,7 @@ export default {
         top auto !important
         right 0 !important
         width 30px !important
-        height 30px !important
+        height 20px !important
         background-color #ffffff !important
         border-radius 15px 0 0 0 !important
         justify-content flex-end !important

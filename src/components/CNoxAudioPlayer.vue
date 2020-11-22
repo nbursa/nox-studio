@@ -5,10 +5,10 @@
     | Your browser does not support the audio element.
   .no-songs(v-if="!list.length") Lista je prazna
   .run-container
-    .marquee
-      .news Novosti - Vest b1 tekst trcecih vesti...ili pestme koja je u toku...
-      .news Novosti - Vest b2 tekst trcecih vesti...ili pestme koja je u toku...
-      .news Novosti - Vest b3 tekst trcecih vesti...ili pestme koja je u toku...
+    .marquee(ref="marquee" :style="{'animation-duration': animationDuration}")
+      .news Lorem 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      .news Lorem 2 - Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      .news Lorem 3 - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 </template>
 
@@ -23,7 +23,8 @@ export default {
   },
   data () {
     return {
-      list: []
+      list: [],
+      animationDuration: '0'
     }
   },
   watch: {
@@ -34,7 +35,7 @@ export default {
   },
   mounted () {
     this.fetchData('audio')
-    this.makeList()
+    this.prepareMarqueeAnimation()
   },
   methods: {
     ...mapActions([
@@ -44,6 +45,13 @@ export default {
       this.stateAudios.map(audio => {
         this.list.push(audio.url)
       })
+    },
+    prepareMarqueeAnimation () {
+      const marquee = this.$refs.marquee
+      const parentWidth = marquee.parentNode.offsetWidth
+      const marqueeWidth = marquee.offsetWidth
+      const odnos = (parentWidth / marqueeWidth) * 100
+      this.animationDuration = `${Math.round(parentWidth / odnos)}s`
     }
   }
 }
@@ -65,9 +73,12 @@ export default {
   @media screen and (max-width: 600px)
     height 100px
     flex-direction column-reverse
-    padding 10px
+    padding 5px 10px 0
     .audio-player
-      width 100%
+      width 60% !important
+      padding 0 5px
+      height 50px
+      margin-right 0 !important
     .run-container
       width 100% !important
   .audio-player,
@@ -90,7 +101,8 @@ export default {
       will-change transform
       height 40px
       min-width fit-content
-      animation marquee 15s linear infinite
+      animation marquee linear infinite
+      animation-duration 0s
       animation-play-state running
       .news
         float left
@@ -102,7 +114,7 @@ export default {
         font-weight 100
       @keyframes marquee
         0%
-          transform translateX(50%)
+          transform translateX(100vw)
         100%
           transform translateX(-100%)
 

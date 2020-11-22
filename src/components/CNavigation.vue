@@ -131,9 +131,8 @@ export default {
       top auto !important
       left 0 !important
       width 30px !important
-      height 30px !important
+      height 20px !important
       background-color #ffffff !important
-      // border-radius 0 !important
       border-radius 0 15px 0 0 !important
       justify-content flex-start !important
       z-index 6
