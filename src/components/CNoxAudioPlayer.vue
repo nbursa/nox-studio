@@ -66,6 +66,14 @@ export default {
   padding 0 20px
   background-color #1e1e1e
   z-index 1
+  @media screen and (max-width: 600px)
+    height 100px
+    flex-direction column-reverse
+    padding 10px
+    .audio-player
+      width 100%
+    .run-container
+      width 100% !important
   .audio-player
     width 30%
     margin-right 20px
