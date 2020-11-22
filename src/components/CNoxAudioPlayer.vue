@@ -1,20 +1,14 @@
 <template lang="pug">
 .nox-player
-  audio.audio-player(controls='')
-    source(:src='list[0]' type='audio/mpeg')
+  audio.audio-player(controls v-if="list.length")
+    source(:src='list[0]' type='audio/mp3')
     | Your browser does not support the audio element.
+  .no-songs(v-if="!list.length") Lista je prazna
   .run-container
-    marquee.marqee(direction='' onmouseover='this.stop();' onmouseout='this.start();')
-      h1 Novosti
-      p Vest br1 tekst trcecih vesti...ili pestme koja je u toku...
-      h1 Novosti
-      p Vest b2 tekst trcecih vesti ili pestme koja je u toku... tekst trcecih vesti ili pestme koja je u toku...
-      h1 Novosti
-      p Vest br3 tekst trcecih vesti ili pestme koja je u toku...
-      h1 Novosti
-      p Vest br4 tekst trcecih vesti ili pestme koja je u toku... tekst trcecih vesti ili pestme koja je u toku...
-      h1 Novosti
-      p Vest br5 tekst trcecih vesti ili pestme koja je u toku...
+    .marquee
+      .news Novosti - Vest b1 tekst trcecih vesti...ili pestme koja je u toku...
+      .news Novosti - Vest b2 tekst trcecih vesti...ili pestme koja je u toku...
+      .news Novosti - Vest b3 tekst trcecih vesti...ili pestme koja je u toku...
 
 </template>
 
@@ -23,7 +17,6 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
-    // ...mapGetters(['stateAudios'])
     ...mapState({
       stateAudios: state => state.files.audio
     })
@@ -31,6 +24,12 @@ export default {
   data () {
     return {
       list: []
+    }
+  },
+  watch: {
+    stateAudios: {
+      handler: 'makeList',
+      immediate: true
     }
   },
   mounted () {
@@ -42,8 +41,8 @@ export default {
       'fetchData'
     ]),
     makeList () {
-      this.stateAudios.map(a => {
-        this.list.push(a.url)
+      this.stateAudios.map(audio => {
+        this.list.push(audio.url)
       })
     }
   }
@@ -71,25 +70,40 @@ export default {
       width 100%
     .run-container
       width 100% !important
-  .audio-player
+  .audio-player,
+  .no-songs
     width 30%
     margin-right 20px
   .run-container
+    position relative
+    overflow hidden
     width 70%
     height 40px
-    overflow hidden
-    position relative
-    display flex
-    align-items center
-    .marqee
+    &:hover
+      .marquee
+        animation-play-state paused
+    .marquee
+      width 100%
       display flex
-      align-items center
-      font-size 20px
+      position absolute
+      white-space nowrap
+      will-change transform
       height 40px
-      h1, p
+      min-width fit-content
+      animation marquee 15s linear infinite
+      animation-play-state running
+      .news
+        float left
+        flex 1
+        line-height 40px
         display inline
+        min-width fit-content
         margin-right 20px
-        line-height 1
         font-weight 100
+      @keyframes marquee
+        0%
+          transform translateX(50%)
+        100%
+          transform translateX(-100%)
 
 </style>
