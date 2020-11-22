@@ -1,8 +1,8 @@
 <template lang="pug">
-.navigation(:style="{left:navToggle ? '0' : '-380px'}")
-  .flag(@click="toggleNav")
+.navigation(:style="{left:navToggle ? '0' : '-380px'}" v-click-outside="blurNavigation")
+  .flag(@click="toggleNav" :style="flagStyle")
     span.icon(icon)
-      v-icon(large) {{ navToggle ? 'mdi-close' : 'mdi-menu' }}
+      v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-menu' }}
   nav
     .top
       .top-header
@@ -11,23 +11,23 @@
           v-btn.soc(v-for="item in social" :key="item.id")
             span.icon(icon)
               v-icon(medium) {{ item.icon }}
-      router-link.logo(to="/")
+      router-link.logo(to="/" @click.native="blurNavigation")
         h1 NOX UNDERGROUND STUDIO
         p Adresa, 11070 Novi Beograd
         p +381 99 9999 999
       a.mail(@click="toggleContact")
-        span.mail-text nox_studio
-        span.mail-text @noxstudio.com
+        span.mail-text nox_studio@noxstudio.com
     .list
       router-link.nav-link(v-for="item in navItems" :key="item.id" :to="item.path" @click.native="toggleNav") {{ item.name }}
-      router-link.nav-link(v-if="isAdmin" to="/admin") ADMIN
-      router-link.nav-link.log-btn(v-if="!isLoggedIn" to="/login") LOGIN
-      router-link.nav-link.log-btn(v-if="isLoggedIn" to="" @click.native="logOut") LOGOUT
+      router-link.nav-link(v-if="isAdmin" to="/admin"  @click.native="blurNavigation") ADMIN
+      router-link.nav-link.log-btn(v-if="!isLoggedIn" to="/login"  @click.native="blurNavigation") LOGIN
+      router-link.nav-link.log-btn(v-if="isLoggedIn" to="" @click.native="logOut(); blurNavigation()") LOGOUT
 
 </template>
 
 <script>
 import firebase from 'firebase/app'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -60,17 +60,22 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      isLoggedIn: state => state.isLoggedIn,
+      isAdmin: state => state.isAdmin
+    }),
     locale: function () {
       return this.$vuetify.lang.current
     },
-    isLoggedIn: function () {
-      return this.$store.state.isLoggedIn
-    },
-    isAdmin: function () {
-      return this.$store.state.isAdmin
-    },
     smallScreen: function () {
-      return window.innerWidth < 550
+      return window.innerWidth < 600
+    },
+    flagStyle: function () {
+      return {
+        bottom: this.navToggle && this.smallScreen ? '0 !important' : 'auto'
+        // top: this.navToggle ? '0 !important' : 'auto !important',
+        // opacity: this.navToggle ? '.5 !important' : '1'
+      }
     }
   },
   methods: {
@@ -95,6 +100,9 @@ export default {
       this.$vuetify.lang.current === 'en'
         ? this.$vuetify.lang.current = 'sr'
         : this.$vuetify.lang.current = 'en'
+    },
+    blurNavigation (e) {
+      this.navToggle = false
     }
   }
 }
@@ -107,20 +115,38 @@ export default {
   top 0
   left -380px
   width 380px
+  max-width 100vw
   height 100vh
   background-color #1e1e1e
   transition left .25s ease-in-out
   border-right 5px solid #121212
   box-sizing content-box
-  z-index 2
+  z-index 5
   &:hover
     border-right 5px solid transparent
+  @media screen and (max-width: 600px)
+    .flag
+      position fixed !important
+      bottom 0 !important
+      top auto !important
+      left 0 !important
+      width 30px !important
+      height 30px !important
+      background-color #ffffff !important
+      // border-radius 0 !important
+      border-radius 0 15px 0 0 !important
+      justify-content flex-start !important
+      z-index 6
+      .v-icon
+        color #1e1e1e !important
   .flag
-    display block
+    display flex
+    align-items center
+    justify-content flex-end
     position absolute
     top 10px
     left 380px
-    z-index 300
+    z-index 1
     padding 10px 20px
     cursor pointer
     background-color #1e1e1e

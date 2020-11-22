@@ -1,8 +1,8 @@
 <template lang="pug">
-  .reservations-sidebar(:style="{right:navToggle ? '0' : '-380px'}")
-    .flag(@click="toggleNav")
+  .reservations-sidebar(:style="{right:navToggle ? '0' : '-380px'}" v-click-outside="blurSidebar")
+    .flag(@click="toggleNav" :style="{bottom: navToggle && smallScreen ? '0 !important' : 'auto'}")
       span.icon(icon)
-        v-icon(large) {{ navToggle ? 'mdi-close' : 'mdi-calendar' }}
+        v-icon(medium) {{ navToggle ? 'mdi-close' : 'mdi-calendar' }}
     .reservations
       h1.page-title REZERVACIJA
       validation-observer(ref="observer" v-slot="{ invalid }")
@@ -21,6 +21,8 @@
               v-model="form.date"
               color="gray"
               mode="date"
+              :class="{'open-date': toggleDate}"
+              @click.native="toggleDatePicker"
             )
           h2 Pocetak
           .form-field
@@ -29,6 +31,8 @@
               format="24hr"
               mode="time"
               :value="'YYYY-MM-DD hh:mm'"
+              :class="{'open-time': toggleStart}"
+              @click.native="toggleStartTime"
             )
           h2 Kraj
           .form-field
@@ -37,6 +41,8 @@
               format="24hr"
               mode="time"
               :value="'YYYY-MM-DD hh:mm'"
+              :class="{'open-time': toggleEnd}"
+              @click.native="toggleEndTime"
             )
           .submit
             v-btn(@click="send" type="submit" :disabled="invalid") Rezervisi
@@ -85,7 +91,15 @@ export default {
         color: 'gray',
         timed: true
       },
-      navToggle: false
+      navToggle: false,
+      toggleDate: false,
+      toggleStart: false,
+      toggleEnd: false
+    }
+  },
+  computed: {
+    smallScreen: function () {
+      return window.innerWidth < 600
     }
   },
   methods: {
@@ -110,6 +124,18 @@ export default {
         .ref(`reservations/${this.form.date}-${this.form.start}-${this.form.end}`)
         .set(this.form)
         .then(this.resetForm())
+    },
+    blurSidebar (e) {
+      this.navToggle = false
+    },
+    toggleDatePicker () {
+      this.toggleDate = !this.toggleDate
+    },
+    toggleStartTime () {
+      this.toggleStart = !this.toggleStart
+    },
+    toggleEndTime () {
+      this.toggleEnd = !this.toggleEnd
     }
   }
 }
@@ -122,11 +148,44 @@ export default {
     right 420px
     height 100vh
     width 380px
+    max-width 100vw
     background-color #1e1e1e
     transition right .25s ease-in-out
     border-left 5px solid #121212
     box-sizing content-box
-    z-index 2
+    z-index 4
+    .v-picker--date
+      .v-picker__title
+        &__btn
+          cursor pointer
+      .v-picker__body
+        height 0
+      &.open-date
+        .v-picker__body
+          height 100% !important
+    .v-picker--time
+      .v-picker__title
+        &__btn
+          cursor pointer
+      .v-picker__body
+        height 0
+      &.open-time
+        > .v-picker__body
+          height 100%
+    @media screen and (max-width: 600px)
+      .flag
+        position fixed !important
+        bottom 0 !important
+        top auto !important
+        right 0 !important
+        width 30px !important
+        height 30px !important
+        background-color #ffffff !important
+        border-radius 15px 0 0 0 !important
+        justify-content flex-end !important
+        z-index 8
+        .v-icon
+          color #1e1e1e !important
     &:hover
       border-left 5px solid transparent
     .reservations
@@ -139,11 +198,11 @@ export default {
     .flag
       display flex
       align-items center
-      justify-content space-between
+      justify-content flex-start
       position absolute
       top 10px
       right 380px
-      z-index 300
+      z-index 1
       padding 10px 20px
       cursor pointer
       background-color #1e1e1e
