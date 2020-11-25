@@ -1,4 +1,26 @@
 export default {
+  translations: {
+    months: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'Oktober',
+      'November',
+      'December'
+    ],
+    reservations: {
+      title: 'Reservations',
+      today: 'Today',
+      day: 'Day',
+      month: 'Month'
+    }
+  },
   badge: 'Badge',
   close: 'Close',
   dataIterator: {

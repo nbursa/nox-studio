@@ -1,4 +1,26 @@
 export default {
+  translations: {
+    months: [
+      'Januar',
+      'Februar',
+      'Mart',
+      'April',
+      'Maj',
+      'Jun',
+      'Jul',
+      'Avgust',
+      'Septembar',
+      'Oktobar',
+      'Novembar',
+      'Decembar'
+    ],
+    reservations: {
+      title: 'Rezervacije',
+      today: 'Danas',
+      day: 'Dan',
+      month: 'Mesec'
+    }
+  },
   badge: 'Bedž',
   close: 'Zatvori',
   dataIterator: {

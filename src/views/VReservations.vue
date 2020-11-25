@@ -1,51 +1,44 @@
 <template lang="pug">
   .res
-    h1.page-title REZERVACIJE
+    h1.page-title {{ $t('reservations', 'title') }}
     v-row.fill-height
       v-col
     v-sheet(height='64')
-      v-toolbar(flat='')
-        v-btn.mr-4(outlined='' color='grey darken-2' @click='setToday')
-          | Today
-        v-btn(fab='' text='' small='' color='grey darken-2' @click='prev')
+      v-toolbar(flat)
+        v-btn.mr-4(@click='setToday')
+          | {{ $t('reservations', 'today') }}
+        v-btn(fab text small color='white lighten-2' @click='prev')
           v-icon(small='')
             | mdi-chevron-left
-        v-btn(fab='' text='' small='' color='grey darken-2' @click='next')
+        v-toolbar-title(v-if='$refs.calendar')
+          | {{ $t('months', $refs.calendar.times.now.month - 1) }} {{ $refs.calendar.times.now.year }}
+        v-btn(fab text small color='white lighten-2' @click='next')
           v-icon(small='')
             | mdi-chevron-right
-        v-toolbar-title(v-if='$refs.calendar')
-          | {{ $refs.calendar.title }}
         v-spacer
         v-menu(bottom='' right='')
           template(v-slot:activator='{ on, attrs }')
-            v-btn(outlined='' color='grey darken-2' v-bind='attrs' v-on='on')
-              span {{ typeToLabel[type] }}
-              v-icon(right='')
-                | mdi-menu-down
-          v-list
-            v-list-item(@click="type = 'day'")
-              v-list-item-title Day
-            v-list-item(@click="type = 'week'")
-              v-list-item-title Week
-            v-list-item(@click="type = 'month'")
-              v-list-item-title Month
-            v-list-item(@click="type = '4day'")
-              v-list-item-title 4 days
-    v-sheet(height='600')
-      v-calendar(v-if="events" ref='calendar' v-model='focus' color='primary' :events='events' :event-color='getEventColor' :type='type' @click:event='showEvent' @click:more='viewDay' @click:date='viewDay' @change='updateRange')
+            v-btn(@click="type === 'day' ? type = 'month' : type = 'day'")
+              | {{ type === 'day' ? $t('reservations', 'month') : $t('reservations', 'day') }}
+    v-sheet(min-height='600px' rounded)
+      v-calendar(ref='calendar' v-model='focus' color='primary' :events='events' :event-color="'primary'" :type='type' @click:event='showEvent' @click:more='viewDay' @click:date='viewDay' @change='updateRange')
       v-menu(v-model='selectedOpen' :close-on-content-click='false' :activator='selectedElement' offset-x='')
-        v-card(color='grey lighten-4' min-width='350px' max-width="450px" flat='')
+        v-card(color='primary lighten-4' min-width='350px' max-width="450px" flat='')
           v-toolbar(:color='selectedEvent.color' dark)
             v-btn(icon @click="textDisabled = !textDisabled" v-if="isAdmin")
               v-icon mdi-pencil
             v-toolbar-title(v-html='selectedEvent.name')
             v-spacer
-            //- v-btn(icon)
-            //-   v-icon mdi-heart
             v-btn(icon @click='selectedOpen = false')
               v-icon mdi-close
           v-card-text.text-card(:class="{gray: textDisabled}")
+            .text( v-if="!isAdmin")
+              //- .date Datum: {{ eventDate }}
+              .date Datum: {{ eventDate.getDate() }}-{{ eventDate.getMonth() }}-{{ eventDate.getYear() }}
+              .start Pocetak: {{ eventStart }}
+              .end Kraj: {{ eventEnd }}
             v-textarea.text(
+              v-if="isAdmin"
               clearable
               clear-icon="mdi-close-circle"
               color="noxdark"
@@ -55,11 +48,6 @@
               :value="`Datum: ${eventDate}\n Pocetak: ${eventStart}\n Kraj: ${eventEnd}`"
               hint="Hint text"
             )
-              //- p(color="red") {{selectedEvent.date}}
-              //- p(color="red") {{selectedEvent.start}} {{selectedEvent.end}}
-          //- v-card-actions
-          //-   v-btn(text color='secondary' @click='selectedOpen = false')
-          //-     | Zatvori
 
 </template>
 
@@ -73,7 +61,7 @@ export default {
       isAdmin: state => state.isAdmin
     }),
     eventDate: function () {
-      return this.selectedEvent.date
+      return new Date(this.selectedEvent.date)
     },
     eventStart: function () {
       return this.selectedEvent.start && this.selectedEvent.start.toLocaleTimeString()
@@ -138,14 +126,12 @@ export default {
           this.selectedOpen = true
         }, 10)
       }
-
       if (this.selectedOpen) {
         this.selectedOpen = false
         setTimeout(open, 10)
       } else {
         open()
       }
-
       nativeEvent.stopPropagation()
     },
     updateRange () {
@@ -177,28 +163,23 @@ export default {
       text-align center
     .v-event
       text-align center
-
+      margin 10px auto 0
+    .v-calendar-weekly__week
+      min-height 100px
+    .v-calendar-weekly__head
+      border-bottom 1px solid #9e9e9e
+    .v-btn--outlined
+      border thin solid white
+      .v-btn__content
+        color white
+    .v-toolbar
+      background-color #FB8C00 !important
+      color #ffffff
+    .v-present .v-btn
+      font-size 20px
   .v-card__text.text-card
-    background-color black !important
+    background-color #1e1e1e !important
   .text.theme--dark.v-input--is-disabled input, .text.theme--dark.v-input--is-disabled textarea
-    color gray !important
-  // .theme--dark.v-input--is-label-active input, .theme--dark.v-input--is-label-active textarea
-    // color black !important
-    // >>> .v-menu__content
-    // ::v-deep .theme--dark.v-input input, .theme--dark.v-input textarea
-    //     color gray !important
-  // >>> .theme--dark
-  //     // .v-input input, .theme--dark.v-input textarea
-  //     #input-372
-  //       color gray !important
-  //     .v-input input, .theme--dark.v-input textarea
-  //       color black !important
-    // .v-card > .v-card__text.text-carddisableddisabled
-    //   color #000000 !important
-    //   &.gray
-    //     .text
-    //       color gray !important
-    //   .text
-    //     color #000000 !important
+    color lightgray !important
 
 </style>

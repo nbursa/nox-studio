@@ -69,22 +69,24 @@ export const fetchReservations = ({
   commit('setReservations', [])
   const reservations = []
   firebase.database().ref('reservations').on('value', (snapshot) => {
-    Object.values(snapshot.val()).forEach((item, i) => {
-      const id = Object.keys(snapshot.val())[i]
-      const reservationItem = {
-        id,
-        date: item.date,
-        start: new Date(`${item.date} ${item.end}`),
-        end: new Date(`${item.date} ${item.end}`),
-        name: item.name,
-        phone: item.phone,
-        email: item.email,
-        color: item.color,
-        timed: item.timed
-      }
-      reservations.push(reservationItem)
-    })
+    if (snapshot.val()) {
+      Object.values(snapshot.val()).forEach((item, i) => {
+        const id = Object.keys(snapshot.val())[i]
+        const reservationItem = {
+          id,
+          date: item.date,
+          start: new Date(`${item.date} ${item.start}`),
+          end: new Date(`${item.date} ${item.end}`),
+          name: item.name,
+          phone: item.phone,
+          email: item.email,
+          color: item.color,
+          timed: item.timed
+        }
+        reservations.push(reservationItem)
+      })
+    }
   })
-  commit('setReservations', reservations)
+  reservations && commit('setReservations', reservations)
   return Promise.resolve()
 }

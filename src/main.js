@@ -12,12 +12,28 @@ import 'firebase/storage'
 import vuetify from './plugins/vuetify'
 import clickOutside from './directives/click-outside'
 import golden from './directives/golden'
+// import translate from './mixins/translation'
+import sr from '@/lang/sr'
+import en from './lang/en'
 
 Vue.config.productionTip = false
 
 Vue.use(Calendar, { componentPrefix: 'nox' })
 Vue.use(clickOutside)
 Vue.use(golden)
+// Vue.use(translate)
+
+Vue.mixin({
+  methods: {
+    $t: function (field, key) {
+      if (field && key) {
+        return this.$vuetify.lang.current === 'sr'
+          ? sr.translations[field][key]
+          : en.translations[field][key]
+      }
+    }
+  }
+})
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_apiKey,

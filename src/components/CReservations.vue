@@ -6,7 +6,7 @@
     .reservations
       h1.page-title REZERVACIJA
       validation-observer(ref="observer" v-slot="{ invalid }")
-        v-form(@submit.prevent="send")
+        v-form
           h2 Ime
           .form-field-input
             validation-provider(v-slot="{errors}" rules="required|min:3" name="Ime")
@@ -19,10 +19,11 @@
           .form-field
             v-date-picker(
               v-model="form.date"
-              color="gray"
+              color="primary"
               mode="date"
               :class="{'open-date': toggleDate}"
-              @click.native="toggleDatePicker"
+              @click.native.stop="toggleDatePicker"
+              :min="today"
             )
           h2 Pocetak
           .form-field
@@ -30,9 +31,13 @@
               v-model="form.start"
               format="24hr"
               mode="time"
+              color="primary"
               :value="'YYYY-MM-DD hh:mm'"
               :class="{'open-time': toggleStart}"
               @click.native="toggleStartTime"
+              :allowed-hours="allowedStartHours"
+              :allowed-minutes="allowedStartMinutes"
+              dark
             )
           h2 Kraj
           .form-field
@@ -40,9 +45,11 @@
               v-model="form.end"
               format="24hr"
               mode="time"
+              color="primary"
               :value="'YYYY-MM-DD hh:mm'"
               :class="{'open-time': toggleEnd}"
               @click.native="toggleEndTime"
+              :allowed-minutes="allowedEndMinutes"
             )
           .submit
             v-btn(@click="send" type="submit" :disabled="invalid") Rezervisi
@@ -53,6 +60,7 @@
 import { required, numeric, min } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 import firebase from 'firebase/app'
+import { mapState } from 'vuex'
 
 setInteractionMode('aggressive')
 
@@ -81,26 +89,59 @@ export default {
       invalid: true,
       contactType: ['phone', 'email'],
       select: 'phone',
-      form: {
-        name: '',
-        email: '',
-        phone: '',
-        date: new Date().toISOString().substr(0, 10),
-        start: new Date(),
-        end: new Date(),
-        color: 'gray',
-        timed: true
-      },
+      form: {},
       navToggle: false,
       toggleDate: false,
       toggleStart: false,
-      toggleEnd: false
+      toggleEnd: false,
+      today: new Date().toISOString()
     }
   },
   computed: {
+    ...mapState({
+      reservations: state => state.reservations
+    }),
     smallScreen: function () {
       return window.innerWidth < 600
+    },
+    allowedStartHours: function () {
+      const reservedHours = this.reservations.filter(res => {
+        return res.date === this.form.date
+      }).map(item => {
+        return item.start.getHours()
+      })
+      const hours = Array.from(Array(24).keys()).filter(item => !reservedHours.includes(item))
+      return hours
+    },
+    allowedEndHours: function () {
+      const reservedHours = this.reservations.filter(res => {
+        console.log('res: ', this.form.date, res.date)
+        return res.date === this.form.date
+      }).map(item => {
+        return item.end.getHours()
+      })
+      const hours = Array.from(Array(24).keys()).filter(item => !reservedHours.includes(item))
+      return hours
+    },
+    allowedStartMinutes: function () {
+      const reservedMinutes = this.reservations.filter(res => {
+        console.log('res: ', this.form.date, res.date)
+        return res.date === this.form.date
+      }).map(item => {
+        return item.start.getMinutes()
+      })
+      console.log('start minutes: ', reservedMinutes)
+      const minutes = Array.from(Array(60).keys()).filter(item => !reservedMinutes.includes(item))
+      return minutes
+    },
+    allowedEndMinutes: function () {
+      console.log('start minutes: ', Array.from(Array(60).keys()))
+      const minutes = Array.from(Array(60).keys())
+      return minutes
     }
+  },
+  mounted () {
+    this.resetForm()
   },
   methods: {
     toggleNav () {
@@ -111,15 +152,15 @@ export default {
         name: '',
         email: '',
         phone: '',
-        date: new Date().toISOString().substr(0, 10),
-        start: new Date(),
-        end: new Date(),
+        date: new Date().toISOString().split('T')[0],
+        start: `${new Date().getHours()}:${new Date().getMinutes()}`,
+        end: `${new Date().getHours()}:${new Date().getMinutes()}`,
         color: 'gray',
         timed: true
       }
     },
-    send () {
-      firebase
+    async send () {
+      await firebase
         .database()
         .ref(`reservations/${this.form.date}-${this.form.start}-${this.form.end}`)
         .set(this.form)
@@ -131,7 +172,7 @@ export default {
     toggleDatePicker () {
       this.toggleDate = !this.toggleDate
     },
-    toggleStartTime () {
+    toggleStartTime (e) {
       this.toggleStart = !this.toggleStart
     },
     toggleEndTime () {
@@ -155,18 +196,42 @@ export default {
     box-sizing content-box
     z-index 4
     .v-picker--date
+      transition height .25s ease-in-out
       .v-picker__title
+        cursor pointer !important
+        // border 1px solid goldenrod !important
+        // color goldenrod
         &__btn
           cursor pointer
+        .v-date-picker-title
+          pointer-events none
       .v-picker__body
         height 0
       &.open-date
+        // .v-picker__title
+        //   border 1px solid goldenrod !important
+        //   color goldenrod
         .v-picker__body
           height 100% !important
     .v-picker--time
-      .v-picker__title
-        &__btn
-          cursor pointer
+      transition height .25s ease-in-out
+      .v-time-picker-title__time
+        width 100%
+        display flex
+        justify-content center
+        .v-picker__title
+          border
+          &__btn
+            cursor pointer
+            flex 1
+            &--active
+              font-size 50px !important
+            &:first-child
+              justify-content flex-end
+              margin-right 10px
+            &:nth-child(3)
+              justify-content flex-start
+              margin-left 10px
       .v-picker__body
         height 0
       &.open-time
