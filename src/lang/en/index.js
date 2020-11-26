@@ -19,6 +19,14 @@ export default {
       today: 'Today',
       day: 'Day',
       month: 'Month'
+    },
+    navigation: {
+      home: 'Home',
+      blog: 'Blog',
+      music: 'Music',
+      galery: 'Galery',
+      reservations: 'Reservations',
+      about: 'About Us'
     }
   },
   badge: 'Badge',

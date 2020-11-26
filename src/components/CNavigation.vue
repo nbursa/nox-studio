@@ -32,12 +32,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      navItems: [
-        { id: 0, path: '/about', name: 'O Nama' },
-        { id: 1, path: '/music', name: 'Muzika' },
-        { id: 2, path: '/galery', name: 'Galerija' },
-        { id: 3, path: '/reservations', name: 'Rezervacije' }
-      ],
       navToggle: false,
       social: [
         {
@@ -76,6 +70,16 @@ export default {
         // top: this.navToggle ? '0 !important' : 'auto !important',
         // opacity: this.navToggle ? '.5 !important' : '1'
       }
+    },
+    navItems: function () {
+      return [
+        { id: 0, path: '/', name: this.$t('navigation', 'home') },
+        { id: 1, path: '/blog', name: this.$t('navigation', 'blog') },
+        { id: 2, path: '/music', name: this.$t('navigation', 'music') },
+        { id: 3, path: '/galery', name: this.$t('navigation', 'galery') },
+        { id: 4, path: '/reservations', name: this.$t('navigation', 'reservations') },
+        { id: 4, path: '/about', name: this.$t('navigation', 'about') }
+      ]
     }
   },
   methods: {

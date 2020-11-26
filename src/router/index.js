@@ -91,6 +91,12 @@ const VReservations = lazyLoadView({
   error: CError
 })
 
+const VBlog = lazyLoadView({
+  component: import('../views/VBlog.vue'),
+  loading: CLoader,
+  error: CError
+})
+
 const routes = [
   {
     path: '/',
@@ -115,6 +121,12 @@ const routes = [
       requiresAuth: true,
       isAdmin: true
     }
+  },
+  {
+    path: '/blog',
+    name: 'Blog',
+    component: VBlog
+    // component: () => import('../views/VAbout.vue')
   },
   {
     path: '/about',

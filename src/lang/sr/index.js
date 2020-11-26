@@ -19,6 +19,14 @@ export default {
       today: 'Danas',
       day: 'Dan',
       month: 'Mesec'
+    },
+    navigation: {
+      home: 'Pocetna',
+      blog: 'Novosti',
+      music: 'Muzika',
+      galery: 'Galerija',
+      reservations: 'Rezervacije',
+      about: 'O nama'
     }
   },
   badge: 'Bedž',
