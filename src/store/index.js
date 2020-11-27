@@ -22,7 +22,8 @@ export default new Vuex.Store({
     modals: {
       contact: false
     },
-    reservations: []
+    reservations: [],
+    articles: []
   },
   mutations: globalMutations,
   actions: globalActions,

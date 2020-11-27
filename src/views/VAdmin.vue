@@ -44,29 +44,30 @@
 
   v-card.blog
     h2 Write blog post
+    p Can be used without title and/or image. Style whole article in editor.
     form.blog-form(
       enctype="multipart/form-data",
       novalidate,
       v-if="isInitial || isSaving || isSuccess"
     )
       .form-field
-        v-text-field.blog-title(v-model="blogData.title" label="Title" required)
+        v-text-field.blog-title(v-model="blogData.title" label="Optional: Article title" required)
       .form-field
         v-select.blog-image(
           v-model="blogData.image",
           :items="images",
-          label="Select image for blog",
+          label="Optional: Select main image for article",
           outlined
           @change="addImage"
         )
       .form-field
         Vueditor(
+          ref="editor"
           v-model="blogData.article"
-          @change="addArticle"
+          @click="addArticle"
         )
-    .t title: {{ blogData.title }}
-    .i images: {{ blogData.image }}
-    .i article: {{ blogData.article }}
+      .submit
+        v-btn.float-right.mt-6(@click="send" type="submit" small rounded) Submit
 
 </template>
 
@@ -223,6 +224,18 @@ export default {
     },
     addArticle (article) {
       console.log('article: ', article)
+    },
+    async send () {
+      this.blogData.article = this.$refs.editor && this.$refs.editor.getContent()
+      this.blogData.time = new Date()
+      await firebase
+        .database()
+        .ref(`articles/${this.blogData.title}`)
+        .set(this.blogData)
+        .then(this.resetBlogForm())
+    },
+    resetBlogForm () {
+      this.blogData = new FormData()
     }
   }
 }
@@ -233,6 +246,8 @@ export default {
 .admin {
   padding: 20px;
   text-align: initial;
+  max-width: 800px;
+  margin: 0 auto;
 
   &-header {
     display: flex;
@@ -256,6 +271,9 @@ export default {
       text-transform: uppercase;
       text-align: left;
       margin-bottom: 20px;
+    }
+    .vueditor {
+      min-height: 350px;
     }
   }
 
@@ -298,6 +316,12 @@ export default {
         font-size: 1.2em;
         text-align: center;
         padding: 50px 0;
+      }
+
+      .submit {
+        .v-btn {
+          margin: 0 0 20px auto;
+        }
       }
     }
   }

@@ -23,3 +23,7 @@ export const setFiles = (state, payload) => {
 export const setReservations = (state, payload) => {
   state.reservations = payload
 }
+
+export const setArticles = (state, payload) => {
+  state.articles = payload
+}

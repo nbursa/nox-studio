@@ -164,6 +164,8 @@ export default {
     max-height 100vh
     overflow hidden
     overflow-y auto
+    &::-webkit-scrollbar
+      width 5px
     .top
       padding 0 0 20px
       &-header
@@ -210,7 +212,7 @@ export default {
       display flex
       flex-direction column
       border-top 1px solid black
-      padding 20px 0 30px
+      padding 20px 0 100px
       .nav-link
         font-size 20px
         font-family: Oswald, serif

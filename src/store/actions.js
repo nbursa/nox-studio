@@ -90,3 +90,26 @@ export const fetchReservations = ({
   reservations && commit('setReservations', reservations)
   return Promise.resolve()
 }
+
+export const fetchArticles = ({
+  commit
+}) => {
+  commit('setArticles', [])
+  const articles = []
+  firebase.database().ref('articles').on('value', (snapshot) => {
+    if (snapshot.val()) {
+      Object.values(snapshot.val()).forEach((item, i) => {
+        const id = Object.keys(snapshot.val())[i]
+        const articleItem = {
+          id,
+          title: item.title,
+          image: item.image,
+          article: item.article
+        }
+        articles.push(articleItem)
+      })
+    }
+  })
+  articles && commit('setArticles', articles)
+  return Promise.resolve()
+}
