@@ -27,6 +27,10 @@ export default {
       galery: 'Galery',
       reservations: 'Reservations',
       about: 'About Us'
+    },
+    player: {
+      supported: 'Your browser does not support the audio element.',
+      empty: 'List is empty'
     }
   },
   badge: 'Badge',

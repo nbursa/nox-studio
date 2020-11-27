@@ -3,7 +3,6 @@ import App from './App.vue'
 // import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import Calendar from 'v-calendar'
 import firebase from 'firebase/app'
 import 'firebase/analytics'
 import 'firebase/auth'
@@ -15,13 +14,36 @@ import golden from './directives/golden'
 // import translate from './mixins/translation'
 import sr from '@/lang/sr'
 import en from './lang/en'
+import Vueditor from 'vueditor'
+import 'vueditor/dist/style/vueditor.min.css'
 
 Vue.config.productionTip = false
 
-Vue.use(Calendar, { componentPrefix: 'nox' })
+const config = {
+  toolbar: [
+    'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'divider',
+    'bold', 'italic', 'underline', 'strikeThrough', 'links', 'divider', 'subscript', 'superscript',
+    'divider', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', '|', 'indent', 'outdent',
+    'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
+  ],
+  fontName: [{
+    val: 'arial black'
+  },
+  {
+    val: 'times new roman'
+  },
+  {
+    val: 'Courier New'
+  }
+  ],
+  fontSize: ['5px', '10px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
+  uploadUrl: ''
+}
+
 Vue.use(clickOutside)
 Vue.use(golden)
 // Vue.use(translate)
+Vue.use(Vueditor, config)
 
 Vue.mixin({
   methods: {

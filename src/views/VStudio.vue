@@ -12,7 +12,7 @@ export default {
 
 <style lang="stylus">
   .studio
-    padding 20px
+    padding 20px 20px 50px
     h1
       text-align center
 </style>

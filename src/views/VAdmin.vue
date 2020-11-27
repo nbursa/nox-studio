@@ -8,10 +8,9 @@
 
   v-card.upload
     h2 Upload files
-    form(
+    v-form(
       enctype="multipart/form-data",
-      novalidate,
-      v-if="isInitial || isSaving || isSuccess"
+      novalidate
     )
       v-select.select(
         v-model="uploadName",
@@ -42,10 +41,38 @@
           | Uploaded {{ uploadValue }}%
           br
           | Click or drag file(s) to upload again
+
+  v-card.blog
+    h2 Write blog post
+    form.blog-form(
+      enctype="multipart/form-data",
+      novalidate,
+      v-if="isInitial || isSaving || isSuccess"
+    )
+      .form-field
+        v-text-field.blog-title(v-model="blogData.title" label="Title" required)
+      .form-field
+        v-select.blog-image(
+          v-model="blogData.image",
+          :items="images",
+          label="Select image for blog",
+          outlined
+          @change="addImage"
+        )
+      .form-field
+        Vueditor(
+          v-model="blogData.article"
+          @change="addArticle"
+        )
+    .t title: {{ blogData.title }}
+    .i images: {{ blogData.image }}
+    .i article: {{ blogData.article }}
+
 </template>
 
 <script>
 import firebase from 'firebase/app'
+import { mapState, mapActions } from 'vuex'
 
 const Status = {
   STATUS_INITIAL: 0,
@@ -55,6 +82,7 @@ const Status = {
 }
 
 export default {
+  name: 'Admin',
   data () {
     return {
       uploadedFiles: [],
@@ -65,10 +93,19 @@ export default {
       uploadItems: ['Audio', 'Video', 'Image'],
       uploadName: 'Audio',
       uploadValue: 0,
-      img: null
+      img: null,
+      blogData: new FormData()
     }
   },
   computed: {
+    ...mapState({
+      stateImages: state => state.files.image
+    }),
+    images: function () {
+      return this.stateImages.map(image => {
+        return image.name
+      })
+    },
     uploadAccept: function () {
       return `${this.uploadName.toLowerCase}/*`
     },
@@ -87,8 +124,12 @@ export default {
   },
   mounted () {
     this.reset()
+    this.fetchData('image')
   },
   methods: {
+    ...mapActions([
+      'fetchData'
+    ]),
     reset () {
       this.currentStatus = Status.STATUS_INITIAL
       this.uploadedFiles = []
@@ -173,6 +214,15 @@ export default {
         .catch(function (error) {
           console.log('firebase logout error: ', error)
         })
+    },
+    addImage (imageName) {
+      const image = this.stateImages.filter(image => {
+        return image.name === imageName
+      })
+      this.blogData.image = image
+    },
+    addArticle (article) {
+      console.log('article: ', article)
     }
   }
 }
@@ -188,7 +238,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
 
   h1 {
@@ -200,10 +250,19 @@ export default {
     padding: 0 !important;
   }
 
+  .blog {
+    margin-bottom 60px
+    h2 {
+      text-transform: uppercase;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+  }
+
   .upload {
-    max-width: 400px;
+    // max-width: 400px;
     padding: 20px;
-    margin: 40px 20px 20px;
+    margin: 40px 0 20px;
 
     h2 {
       text-transform: uppercase;

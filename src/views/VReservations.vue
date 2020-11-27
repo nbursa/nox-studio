@@ -158,7 +158,7 @@ export default {
 
 <style lang="stylus">
   .res
-    padding 20px
+    padding 20px 20px 50px
     h1
       text-align center
     .v-event

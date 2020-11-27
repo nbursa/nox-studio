@@ -32,6 +32,7 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  name: 'Music',
   computed: {
     ...mapState({
       stateVideo: state => state.files.video,
@@ -53,7 +54,7 @@ export default {
 
 <style lang="stylus">
   .home
-    padding 20px
+    padding 20px 20px 50px
     h1
       text-align center
     .section

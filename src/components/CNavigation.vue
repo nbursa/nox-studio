@@ -78,7 +78,7 @@ export default {
         { id: 2, path: '/music', name: this.$t('navigation', 'music') },
         { id: 3, path: '/galery', name: this.$t('navigation', 'galery') },
         { id: 4, path: '/reservations', name: this.$t('navigation', 'reservations') },
-        { id: 4, path: '/about', name: this.$t('navigation', 'about') }
+        { id: 5, path: '/about', name: this.$t('navigation', 'about') }
       ]
     }
   },

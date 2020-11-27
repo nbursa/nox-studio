@@ -27,6 +27,10 @@ export default {
       galery: 'Galerija',
       reservations: 'Rezervacije',
       about: 'O nama'
+    },
+    player: {
+      supported: 'Vas pretrazivac ne podrzava audio element.',
+      empty: 'Lista je prazna'
     }
   },
   badge: 'Bedž',

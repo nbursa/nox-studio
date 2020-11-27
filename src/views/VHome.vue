@@ -45,6 +45,7 @@ export default {
 <style lang="stylus">
   .home
     position relative
+    padding 20px 20px 50px
     z-index 1
     .video-background
       position absolute
@@ -59,8 +60,7 @@ export default {
     .center
       position relative
       text-align center
-      height calc(100vh - 105px)
-      // h1
+      height calc(100vh - 115px)
       p
         margin-bottom 0
         font-weight 100

@@ -100,7 +100,7 @@ export default {
 
 <style lang="stylus">
   .login
-    padding 20px
+    padding 20px 20px 50px
     h1
       text-align center
       margin-bottom 20px
