@@ -21,7 +21,7 @@ Vue.config.productionTip = false
 
 const config = {
   toolbar: [
-    'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'divider',
+    'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'divider',
     'bold', 'italic', 'underline', 'strikeThrough', 'links', 'divider', 'subscript', 'superscript',
     'divider', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', '|', 'indent', 'outdent',
     'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'

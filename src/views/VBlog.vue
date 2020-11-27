@@ -2,10 +2,13 @@
   .blog
     h1 BLOG
     .articles
-      v-card.article(v-for="(article, i) in articles" :key="i")
+      v-card.article(v-if="articles" v-for="(article, i) in articles" :key="i")
         h2.article-title(v-if="article.title") {{ article.title }}
+        p.article-time(v-if="article.time") {{ article.time }}
         v-img.article-image(v-if="article.image" :src="article.image[0].url")
         .article-body(v-if="article.article" v-html="article.article")
+      .no-articles(v-if="!articles")
+        h2 No articles found
 
 </template>
 
@@ -43,12 +46,26 @@ export default {
         margin 0 0 20px
         &-title
           font-size 40px
-          margin-bottom 20px
           text-transform capitalize
+        &-time
+          margin-bottom 20px
+          font-size 10px !important
+          font-weight 100
+          font-style italic
         &-image
           margin-bottom 20px
         &-body
           font-size 16px
           font-weight 100
+          *
+            background-color transparent !important
+            color #ffffff !important
+          a
+            color goldenrod !important
+      .no-articles
+        display flex
+        align-items center
+        justify-content center
+        margin-top 50px
 
 </style>

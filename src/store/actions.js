@@ -103,6 +103,7 @@ export const fetchArticles = ({
         const articleItem = {
           id,
           title: item.title,
+          time: item.time,
           image: item.image,
           article: item.article
         }

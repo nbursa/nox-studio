@@ -51,7 +51,7 @@
       v-if="isInitial || isSaving || isSuccess"
     )
       .form-field
-        v-text-field.blog-title(v-model="blogData.title" label="Optional: Article title" required)
+        v-text-field.blog-title(v-model="blogData.title" label="Article title" required)
       .form-field
         v-select.blog-image(
           v-model="blogData.image",
@@ -63,8 +63,6 @@
       .form-field
         Vueditor(
           ref="editor"
-          v-model="blogData.article"
-          @click="addArticle"
         )
       .submit
         v-btn.float-right.mt-6(@click="send" type="submit" small rounded) Submit
@@ -222,20 +220,24 @@ export default {
       })
       this.blogData.image = image
     },
-    addArticle (article) {
-      console.log('article: ', article)
-    },
-    async send () {
-      this.blogData.article = this.$refs.editor && this.$refs.editor.getContent()
-      this.blogData.time = new Date()
-      await firebase
-        .database()
-        .ref(`articles/${this.blogData.title}`)
-        .set(this.blogData)
-        .then(this.resetBlogForm())
+    send () {
+      const form = {
+        title: this.blogData.title || null,
+        time: `${new Date().getDate()}-${(new Date().getMonth() + 1)}-${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}` || null,
+        image: this.blogData.image || null,
+        article: this.$refs.editor && this.$refs.editor.getContent()
+      }
+      if (form.title && form.article && form.time) {
+        firebase
+          .database()
+          .ref(`articles/${form.title}`)
+          .set(form)
+          .then(this.resetBlogForm())
+      }
     },
     resetBlogForm () {
       this.blogData = new FormData()
+      this.$refs.editor.setContent('')
     }
   }
 }
@@ -278,7 +280,6 @@ export default {
   }
 
   .upload {
-    // max-width: 400px;
     padding: 20px;
     margin: 40px 0 20px;
 
