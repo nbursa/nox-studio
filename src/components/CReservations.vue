@@ -110,12 +110,10 @@ export default {
       }).map(item => {
         return item.start.getHours()
       })
-      const hours = Array.from(Array(24).keys()).filter(item => !reservedHours.includes(item))
-      return hours
+      return Array.from(Array(24).keys()).filter(item => !reservedHours.includes(item))
     },
     allowedEndHours: function () {
       const reservedHours = this.reservations.filter(res => {
-        console.log('res: ', this.form.date, res.date)
         return res.date === this.form.date
       }).map(item => {
         return item.end.getHours()
@@ -125,17 +123,14 @@ export default {
     },
     allowedStartMinutes: function () {
       const reservedMinutes = this.reservations.filter(res => {
-        console.log('res: ', this.form.date, res.date)
         return res.date === this.form.date
       }).map(item => {
         return item.start.getMinutes()
       })
-      console.log('start minutes: ', reservedMinutes)
       const minutes = Array.from(Array(60).keys()).filter(item => !reservedMinutes.includes(item))
       return minutes
     },
     allowedEndMinutes: function () {
-      console.log('start minutes: ', Array.from(Array(60).keys()))
       const minutes = Array.from(Array(60).keys())
       return minutes
     }

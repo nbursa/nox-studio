@@ -47,8 +47,7 @@
     p Can be used without title and/or image. Style whole article in editor.
     form.blog-form(
       enctype="multipart/form-data",
-      novalidate,
-      v-if="isInitial || isSaving || isSuccess"
+      novalidate
     )
       .form-field
         v-text-field.blog-title(v-model="blogData.title" label="Article title" required)
@@ -246,7 +245,7 @@ export default {
 
 <style lang="stylus">
 .admin {
-  padding: 20px;
+  padding: 20px 20px 100px;
   text-align: initial;
   max-width: 800px;
   margin: 0 auto;
@@ -268,7 +267,8 @@ export default {
   }
 
   .blog {
-    margin-bottom 60px
+    margin-bottom: 60px;
+    padding: 20px;
     h2 {
       text-transform: uppercase;
       text-align: left;

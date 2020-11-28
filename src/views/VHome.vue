@@ -1,11 +1,13 @@
 <template lang="pug">
   .home
-    section.vbg
+    .vbg
       c-video-background(:sources="videoSources" img='' :mediaType="'video/mp4'")
-    section.center
-      h1 NOX STUDIO
-      p Adresa, 11070, Novi Beograd
-      p +381 99 9999 999
+      .section-header
+        h1 Pocetna
+      .center
+        h1 NOX STUDIO
+        p Adresa, 11070, Novi Beograd
+        p +381 99 9999 999
     section.news
       h1 OVDE MOZDA NOVOSTI?
     section.map
@@ -44,23 +46,33 @@ export default {
 
 <style lang="stylus">
   .home
-    position relative
-    padding 20px 20px 50px
-    z-index 1
-    .video-background
-      position absolute
-      top 0
-      left 0
-      width 100%
-      height auto
-      max-height 100vh
-      max-width 100vw
-      z-index -1
-      pointer-events none
+    padding-bottom 100px
+    .vbg
+      position relative
+      height 100vh
+      z-index 0
+      .section-header,
+      .video-background
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height auto
+        max-height 100vh
+        max-width 100vw
+      .section-header
+        display flex
+        align-items center
+        justify-content center
+        height 100%
+        z-index 1
+        h1
+          font-size 80px
     .center
       position relative
       text-align center
       height calc(100vh - 115px)
+      padding-top 30px
       p
         margin-bottom 0
         font-weight 100
